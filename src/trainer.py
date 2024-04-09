@@ -1,15 +1,15 @@
 # from src.model import ConBSR
-from models.esd import esd
+# from models.esd import esd
 # from models.esd_withpa import esd_withpa
 # from models.lam import lam
 # from models.gbpe import gbpe
 # from models.gbpe_maxpooling import gbpe_maxpooling
 # from models.gbpe_30lambda import gbpe_30lambda
 from models.protobert import protobert
-from models.spanproto import SpanProto
+# from models.spanproto import SpanProto
 from models.pacl import Pacl
-from models.pacl_mha0210 import pacl_0210
-from models.pacl_noMHA import Pacl_nomha
+# from models.pacl_mha0210 import pacl_0210
+# from models.pacl_noMHA import Pacl_nomha
 # from models.pacl_mha0210 import pacl_0210
 # from models.container import container
 # from models.conbsr_nobiaffine import conbsr_nobiaffine
@@ -226,22 +226,22 @@ class Trainer:
         #     model = gbpe_maxpooling(self.args, word_encoder)
         #     print('use gbpe_maxpooling')
             
-        elif model_name == 'esd':
-            model = esd(self.args, word_encoder)
-            print('use ESD')
+        # elif model_name == 'esd':
+        #     model = esd(self.args, word_encoder)
+        #     print('use ESD')
         elif model_name == 'protobert':
             model = protobert(self.args, word_encoder)
             print('use protobert')
-        elif model_name == 'spanproto':
-            model = SpanProto(self.args, word_encoder)
-            print('use spanproto')
-        elif model_name == 'pacl_nomha':
-            model = Pacl_nomha(self.args, word_encoder)
-            print('use Pacl_nomha')
+        # elif model_name == 'spanproto':
+        #     model = SpanProto(self.args, word_encoder)
+        #     print('use spanproto')
+        # elif model_name == 'pacl_nomha':
+        #     model = Pacl_nomha(self.args, word_encoder)
+        #     print('use Pacl_nomha')
         
-        elif model_name == 'pacl_0210':
-            model = pacl_0210(self.args, word_encoder)
-            print('use pacl_0210')
+        # elif model_name == 'pacl_0210':
+        #     model = pacl_0210(self.args, word_encoder)
+        #     print('use pacl_0210')
 
 
             
