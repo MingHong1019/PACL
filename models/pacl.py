@@ -6,7 +6,7 @@ import random
 import copy
 # from utils.draw_picture import draw, draw_withproto
 
-class pacl2(FewShotNERModel):
+class pacl(FewShotNERModel):
 
     def __init__(self, args, word_encoder):
         FewShotNERModel.__init__(self, args, word_encoder)
