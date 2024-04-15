@@ -6,7 +6,7 @@ import random
 import copy
 # from utils.draw_picture import draw, draw_withproto
 
-class Pacl_nomha(FewShotNERModel):
+class pacl_nomha(FewShotNERModel):
 
     def __init__(self, args, word_encoder):
         FewShotNERModel.__init__(self, args, word_encoder)
@@ -31,6 +31,7 @@ class Pacl_nomha(FewShotNERModel):
     def get_proto(self, embedding,  tag):
         proto, proto_label, = [], []
         total_label = list(set(tag.tolist()))
+        total_label.sort()
         for label in total_label:
             words = embedding[tag == label]
             proto.append(torch.mean(words, 0))
@@ -96,15 +97,24 @@ class Pacl_nomha(FewShotNERModel):
             qry_label = torch.tensor(qry_label_after).to(qry_label.device)
         loss_q = self.loss(logits, qry_label) 
         return loss_q, logits, pred
-    
-    def loss(self, logits, label):
 
+
+    def loss(self, logits, label):
         label = label.view(-1)
         label = label.to(logits.device)
         logits = logits.view(-1, logits.size(-1))  
-        assert logits.shape[0] == label.shape[0]
+        dim = logits.shape[1] 
+        loss_weights = F.one_hot(label, dim)
+        loss_mask = 1 - loss_weights
+        loss_weights = loss_weights.view(-1, dim)
+        loss_mask = loss_mask.view(-1, dim)
+         
         
-        return self.CELoss(logits, label)
+        loss_pos = (torch.exp(-logits) * loss_weights).sum(dim=-1) 
+        loss_neg = (torch.exp(logits)* loss_mask).sum(dim=-1) 
+        loss_final = torch.log(1 + loss_pos * loss_neg)
+
+        return loss_final.mean()
 
     def inference_label(self, logits, proto_label):
         _, pred_direct = torch.max(logits, 1)
@@ -130,12 +140,12 @@ class Pacl_nomha(FewShotNERModel):
         spt_label = spt_total[1]
         query_emb = self.get_batch_embedding(query)
         support_proto, proto_label = self.get_proto(self.drop(spt), spt_label) 
-        query_emb_2 = self.MHA_encode(support_proto[1:].unsqueeze(0), query_emb.unsqueeze(0))
+        # query_emb_2 = self.MHA_encode(support_proto[1:].unsqueeze(0), query_emb.unsqueeze(0))
 
         logits = self.batch_dist(
             support_proto[1:],
             query_emb,
-            query_emb_2)
+            query_emb)
         
         pred = self.inference_label(logits, proto_label)
         return logits, pred
