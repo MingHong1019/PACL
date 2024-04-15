@@ -7,9 +7,9 @@
 # from models.gbpe_30lambda import gbpe_30lambda
 from models.protobert import protobert
 # from models.spanproto import SpanProto
-from models.pacl import Pacl
+from models.pacl import pacl
 # from models.pacl_mha0210 import pacl_0210
-# from models.pacl_noMHA import Pacl_nomha
+from models.pacl_noMHA import pacl_nomha
 # from models.pacl_mha0210 import pacl_0210
 # from models.container import container
 # from models.conbsr_nobiaffine import conbsr_nobiaffine
@@ -214,7 +214,7 @@ class Trainer:
 
         if model_name == 'pacl':
             print('use pacl')
-            model = Pacl(self.args, word_encoder)
+            model = pacl(self.args, word_encoder)
         # elif model_name == 'lam':
         #     print('use LAM')
         #     model = lam(self.args, word_encoder)
@@ -235,9 +235,9 @@ class Trainer:
         # elif model_name == 'spanproto':
         #     model = SpanProto(self.args, word_encoder)
         #     print('use spanproto')
-        # elif model_name == 'pacl_nomha':
-        #     model = Pacl_nomha(self.args, word_encoder)
-        #     print('use Pacl_nomha')
+        elif model_name == 'pacl_nomha':
+            model = pacl_nomha(self.args, word_encoder)
+            print('use Pacl_nomha')
         
         # elif model_name == 'pacl_0210':
         #     model = pacl_0210(self.args, word_encoder)
